@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "schedule",
+    "committee",
+    "sponsors"
+  ],
+
+  "assets": "/archive/static/",
+
+  "exports": {
+    "old_portal": "/archive/data/export-2025.json"
+  }
+}

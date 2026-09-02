@@ -1,0 +1,17 @@
+{
+  "event": "Freshers Taster 2025",
+  "status": "archived",
+  "committee_count": 11,
+  "registration_status": "closed",
+
+  "migration": {
+    "completed": true,
+    "reference": "LM-4821"
+  },
+
+  "notes": [
+    "Legacy timetable retained for reference",
+    "Old registration endpoint disabled",
+    "Static export generated after migration"
+  ]
+}

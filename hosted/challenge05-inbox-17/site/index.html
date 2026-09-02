@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>
+    Inbox 17
+  </title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #eef1f4;
+      color: #20262c;
+    }
+
+    .app {
+      max-width: 1100px;
+      margin: 30px auto;
+      background: white;
+      border: 1px solid #dce1e6;
+      border-radius: 12px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      min-height: 680px;
+    }
+
+    .list {
+      border-right: 1px solid #e2e6ea;
+      background: #fafbfc;
+    }
+
+    .list h1 {
+      font-size: 19px;
+      margin: 0;
+      padding: 20px;
+      border-bottom: 1px solid #e2e6ea;
+    }
+
+    .message {
+      padding: 17px 18px;
+      border-bottom: 1px solid #e7eaed;
+      cursor: pointer;
+    }
+
+    .message:hover,
+    .message.active {
+      background: #edf3f8;
+    }
+
+    .message .from {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .message .subject {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .message .preview {
+      font-size: 12px;
+      color: #737d87;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .viewer {
+      padding: 32px 36px;
+    }
+
+    .viewer h2 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .meta {
+      background: #f6f8fa;
+      border: 1px solid #e0e5ea;
+      border-radius: 8px;
+      padding: 14px;
+      margin: 18px 0 25px;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .body {
+      line-height: 1.7;
+      max-width: 680px;
+    }
+
+    .portal {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: 1px solid #cfd6dc;
+      border-radius: 6px;
+      background: #f8fafb;
+      font-weight: 600;
+    }
+
+    .details {
+      margin-top: 28px;
+    }
+
+    .details button {
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+
+    .technical {
+      margin-top: 12px;
+      padding: 13px;
+      border: 1px dashed #cdd4da;
+      background: #fbfcfd;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        grid-template-columns: 1fr;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .list {
+        border-right: 0;
+        border-bottom: 1px solid #e2e6ea;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <section class="list">
+      <h1>
+        Inbox 17
+      </h1>
+
+      <div
+        class="message active"
+        data-id="m1"
+      >
+        <div class="from">
+          Computing Society
+        </div>
+
+        <div class="subject">
+          Room change for tonight
+        </div>
+
+        <div class="preview">
+          Tonight's session has moved from ALT1...
+        </div>
+      </div>
+
+      <div
+        class="message"
+        data-id="m2"
+      >
+        <div class="from">
+          Microsoft Account Team
+        </div>
+
+        <div class="subject">
+          Sign-in activity
+        </div>
+
+        <div class="preview">
+          A new sign-in was recorded for your account...
+        </div>
+      </div>
+
+      <div
+        class="message"
+        data-id="m3"
+      >
+        <div class="from">
+          RHUL IT Services
+        </div>
+
+        <div class="subject">
+          Action required: Microsoft 365 storage
+        </div>
+
+        <div class="preview">
+          Your university mailbox is approaching...
+        </div>
+      </div>
+
+      <div
+        class="message"
+        data-id="m4"
+      >
+        <div class="from">
+          GitHub
+        </div>
+
+        <div class="subject">
+          A personal access token was added
+        </div>
+
+        <div class="preview">
+          A new personal access token was added...
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="viewer"
+      id="viewer"
+    ></section>
+
+  </div>
+
+  <script>
+    const messages = {
+      m1: {
+        subject:
+          "Room change for tonight",
+
+        from:
+          "Computing Society <events@rhul.ac.uk>",
+
+        to:
+          "student@rhul.ac.uk",
+
+        trace:
+          "MX-1842",
+
+        body: `
+          <p>Hi,</p>
+
+          <p>
+            Tonight's session has moved
+            from ALT1 to WIN0-04.
+          </p>
+
+          <p>
+            No registration changes are required.
+          </p>
+
+          <p>
+            — Events Team
+          </p>
+        `,
+
+        technical:
+`Return-Path: <events@rhul.ac.uk>
+Reply-To: events@rhul.ac.uk
+Message-Trace: MX-1842
+Link-Target: https://www.royalholloway.ac.uk/`
+      },
+
+      m2: {
+        subject:
+          "Sign-in activity",
+
+        from:
+          "Microsoft Account Team <account-security-noreply@microsoft.com>",
+
+        to:
+          "student@rhul.ac.uk",
+
+        trace:
+          "MX-5508",
+
+        body: `
+          <p>
+            A new sign-in was recorded
+            for your Microsoft account.
+          </p>
+
+          <p>
+            If this was you,
+            no action is required.
+          </p>
+
+          <span class="portal">
+            Review account activity
+          </span>
+        `,
+
+        technical:
+`Return-Path: <account-security-noreply@microsoft.com>
+Reply-To: account-security-noreply@microsoft.com
+Message-Trace: MX-5508
+Link-Target: https://account.microsoft.com/`
+      },
+
+      m3: {
+        subject:
+          "Action required: Microsoft 365 storage",
+
+        from:
+          "RHUL IT Services <service-desk@rhul.ac.uk>",
+
+        to:
+          "student@rhul.ac.uk",
+
+        trace:
+          "MX-7319",
+
+        body: `
+          <p>
+            Hello,
+          </p>
+
+          <p>
+            Your university mailbox is
+            approaching its new storage limit.
+          </p>
+
+          <p>
+            Please review your account before
+            18:00 to avoid interruption to
+            mail delivery.
+          </p>
+
+          <span class="portal">
+            Microsoft 365 Account Portal
+          </span>
+
+          <p>
+            Regards,<br>
+            IT Services
+          </p>
+        `,
+
+        technical:
+`Return-Path: <mailer@rhul-helpdesk.co.uk>
+Reply-To: support@rhul-helpdesk.co.uk
+Message-Trace: MX-7319
+Link-Target: https://rhul-helpdesk.co.uk/office365`
+      },
+
+      m4: {
+        subject:
+          "A personal access token was added",
+
+        from:
+          "GitHub <noreply@github.com>",
+
+        to:
+          "student@rhul.ac.uk",
+
+        trace:
+          "MX-2044",
+
+        body: `
+          <p>
+            A new personal access token was
+            added to your GitHub account.
+          </p>
+
+          <p>
+            If you created it,
+            you can ignore this message.
+            Otherwise, review your
+            security settings.
+          </p>
+
+          <span class="portal">
+            Review security settings
+          </span>
+        `,
+
+        technical:
+`Return-Path: <noreply@github.com>
+Reply-To: noreply@github.com
+Message-Trace: MX-2044
+Link-Target: https://github.com/settings/tokens`
+      }
+    };
+
+
+    const viewer =
+      document.getElementById(
+        "viewer"
+      );
+
+
+    function renderMessage(id) {
+      const msg =
+        messages[id];
+
+
+      viewer.innerHTML = `
+        <h2>
+          ${msg.subject}
+        </h2>
+
+        <div class="meta">
+          <div>
+            <strong>From:</strong>
+            ${msg.from}
+          </div>
+
+          <div>
+            <strong>To:</strong>
+            ${msg.to}
+          </div>
+
+          <div>
+            <strong>Trace:</strong>
+            ${msg.trace}
+          </div>
+        </div>
+
+        <div class="body">
+          ${msg.body}
+        </div>
+
+        <div class="details">
+          <button id="detailsButton">
+            Show technical details
+          </button>
+
+          <div
+            class="technical"
+            id="technical"
+          ></div>
+        </div>
+      `;
+
+
+      document.getElementById(
+        "technical"
+      ).textContent =
+        msg.technical;
+
+
+      document.getElementById(
+        "detailsButton"
+      ).addEventListener(
+        "click",
+        () => {
+          const technical =
+            document.getElementById(
+              "technical"
+            );
+
+          const visible =
+            technical.style.display ===
+            "block";
+
+
+          technical.style.display =
+            visible
+              ? "none"
+              : "block";
+
+
+          document.getElementById(
+            "detailsButton"
+          ).textContent =
+            visible
+              ? "Show technical details"
+              : "Hide technical details";
+        }
+      );
+    }
+
+
+    document.querySelectorAll(
+      ".message"
+    ).forEach(
+      (item) => {
+
+        item.addEventListener(
+          "click",
+          () => {
+
+            document.querySelectorAll(
+              ".message"
+            ).forEach(
+              (row) => {
+                row.classList.remove(
+                  "active"
+                );
+              }
+            );
+
+
+            item.classList.add(
+              "active"
+            );
+
+
+            renderMessage(
+              item.dataset.id
+            );
+          }
+        );
+      }
+    );
+
+
+    renderMessage(
+      "m1"
+    );
+  </script>
+</body>
+</html>

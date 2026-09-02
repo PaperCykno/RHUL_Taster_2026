@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>RHUL CSS // Ghost Team</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --background: #070b0a;
+      --panel: #0c1210;
+      --panel-light: #111a17;
+      --border: #1f392f;
+      --green: #55ff9a;
+      --green-dim: #2ba866;
+      --text: #d6e7df;
+      --muted: #7b958a;
+      --danger: #ff6868;
+      --warning: #ffcf67;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at top,
+          #102119 0%,
+          var(--background) 40%
+        );
+      color: var(--text);
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1500px, 94vw);
+      margin: 0 auto;
+      padding: 28px 0 50px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 22px;
+    }
+
+    .classification {
+      color: var(--danger);
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--green);
+      font-size: clamp(
+        25px,
+        4vw,
+        42px
+      );
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status {
+      border: 1px solid var(--green-dim);
+      padding: 10px 14px;
+      color: var(--green);
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns:
+        minmax(280px, 390px)
+        minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(
+        12,
+        18,
+        16,
+        0.95
+      );
+      border: 1px solid var(--border);
+    }
+
+    .panel-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--green);
+      font-size: 13px;
+      letter-spacing: 1px;
+      background: var(--panel-light);
+    }
+
+    .case-body {
+      padding: 20px;
+    }
+
+    .case-number {
+      color: var(--danger);
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .case-body h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+    }
+
+    .case-body p {
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .evidence {
+      margin: 22px 0;
+      padding: 14px;
+      background: #080d0b;
+      border-left: 3px solid var(--warning);
+    }
+
+    .evidence-title {
+      color: var(--warning);
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .evidence p {
+      margin: 8px 0;
+    }
+
+    .objective {
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+      margin-top: 20px;
+    }
+
+    .objective strong {
+      color: var(--green);
+    }
+
+    .format {
+      background: #050806;
+      border: 1px dashed var(--border);
+      padding: 12px;
+      margin-top: 12px;
+      color: var(--green);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .sql-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 720px;
+    }
+
+    .terminal-status {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .terminal-status span:last-child {
+      color: var(--green);
+    }
+
+    .editor-wrap {
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .prompt {
+      padding: 14px 16px 0;
+      color: var(--green);
+      font-size: 13px;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 180px;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      background: #080d0b;
+      color: #d7fbe6;
+      padding: 14px 16px 18px;
+      font-family:
+        "Courier New",
+        Courier,
+        monospace;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    textarea::placeholder {
+      color: #50635b;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--green-dim);
+      background: #0c1913;
+      color: var(--green);
+      padding: 9px 16px;
+      font-family: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #12241b;
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .shortcut {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .results {
+      padding: 16px;
+      overflow: auto;
+      flex: 1;
+      min-height: 270px;
+    }
+
+    .results-empty {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .error {
+      color: var(--danger);
+      white-space: pre-wrap;
+      font-size: 13px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: max-content;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      border: 1px solid #1c3028;
+      padding: 8px 10px;
+      max-width: 400px;
+      overflow-wrap: anywhere;
+    }
+
+    th {
+      color: var(--green);
+      background: #101a16;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:nth-child(even) td {
+      background: #0a100e;
+    }
+
+    .null {
+      color: #67766f;
+      font-style: italic;
+    }
+
+    .query-meta {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .warning {
+      color: var(--warning);
+    }
+
+    .unlock {
+      margin-top: 20px;
+    }
+
+    .unlock-body {
+      padding: 16px;
+    }
+
+    .unlock-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .unlock input {
+      width: 100%;
+      background: #080d0b;
+      border: 1px solid var(--border);
+      outline: none;
+      color: var(--green);
+      padding: 11px 12px;
+      font-family: inherit;
+      text-transform: uppercase;
+    }
+
+    .unlock input:focus {
+      border-color: var(--green-dim);
+    }
+
+    .unlock-message {
+      margin-top: 12px;
+      min-height: 20px;
+      font-size: 13px;
+    }
+
+    .flag {
+      margin-top: 12px;
+      padding: 14px;
+      border: 1px solid var(--green);
+      color: var(--green);
+      background: #07140d;
+      overflow-wrap: anywhere;
+      font-weight: bold;
+    }
+
+    .footer {
+      color: #53645d;
+      text-align: center;
+      font-size: 11px;
+      margin-top: 24px;
+    }
+
+    @media (
+      max-width: 900px
+    ) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sql-panel {
+        min-height: 600px;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      .status {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <header class="topbar">
+      <div>
+        <div class="classification">
+          // INTERNAL SECURITY SYSTEM
+        </div>
+
+        <h1>
+          RHUL CSS // GHOST TEAM
+        </h1>
+
+        <div class="subtitle">
+          Competition Integrity Investigation Terminal
+        </div>
+      </div>
+
+      <div class="status">
+        DATABASE ACCESS: READ ONLY
+      </div>
+    </header>
+
+    <section class="layout">
+
+      <aside>
+
+        <div class="panel">
+          <div class="panel-header">
+            INCIDENT BRIEF
+          </div>
+
+          <div class="case-body">
+
+            <div class="case-number">
+              CASE #GT-0819
+            </div>
+
+            <h2>
+              The team that never registered.
+            </h2>
+
+            <p>
+              During a routine leaderboard review,
+              organisers discovered evidence that an
+              unknown team had appeared in the
+              competition database.
+            </p>
+
+            <p>
+              No normal registration could be found,
+              yet the team went on to submit multiple
+              valid flags.
+            </p>
+
+            <div class="evidence">
+              <div class="evidence-title">
+                KNOWN EVIDENCE
+              </div>
+
+              <p>
+                &gt; The suspicious team is active.
+              </p>
+
+              <p>
+                &gt; It has no normal registration.
+              </p>
+
+              <p>
+                &gt; It submitted at least three
+                correct flags.
+              </p>
+
+              <p>
+                &gt; Every successful submission
+                came from the same device.
+              </p>
+
+              <p>
+                &gt; The invite used to create it
+                was more than seven days old.
+              </p>
+
+              <p>
+                &gt; Audit records from the
+                creation event survived.
+              </p>
+
+            </div>
+
+            <div class="objective">
+              <p>
+                <strong>
+                  OBJECTIVE
+                </strong>
+              </p>
+
+              <p>
+                Identify the ghost team and determine
+                which participant account actually
+                created it.
+              </p>
+
+              <p>
+                Trace the creation event back through
+                the database and recover the invite
+                code used.
+              </p>
+
+              <p>
+                When you have all four values, build
+                the incident unlock code:
+              </p>
+
+              <div class="format">
+                TEAM_ID-PARTICIPANT_ID-IP_LAST_OCTET-INVITE_SUFFIX
+              </div>
+
+              <p>
+                Example only:
+              </p>
+
+              <div class="format">
+                12-8-44-A91C
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel unlock">
+
+          <div class="panel-header">
+            INCIDENT UNLOCK
+          </div>
+
+          <div class="unlock-body">
+
+            <div class="unlock-row">
+
+              <input
+                id="unlockCode"
+                autocomplete="off"
+                placeholder="ENTER RECOVERY CODE"
+              >
+
+              <button
+                id="unlockButton"
+                type="button"
+              >
+                UNLOCK
+              </button>
+
+            </div>
+
+            <div
+              class="unlock-message"
+              id="unlockMessage"
+            ></div>
+
+            <div
+              class="flag"
+              id="flag"
+              hidden
+            ></div>
+
+          </div>
+        </div>
+
+      </aside>
+
+      <section class="panel sql-panel">
+
+        <div class="panel-header">
+          SQL INVESTIGATION CONSOLE
+        </div>
+
+        <div class="terminal-status">
+          <span>
+            ENGINE: SQLite
+          </span>
+
+          <span>
+            CONNECTED
+          </span>
+        </div>
+
+        <div class="editor-wrap">
+
+          <div class="prompt">
+            investigator@ghost-team:~$ sql
+          </div>
+
+          <textarea
+            id="query"
+            spellcheck="false"
+            placeholder="Enter a SQL query..."
+          ></textarea>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            id="runButton"
+            type="button"
+          >
+            RUN QUERY
+          </button>
+
+          <button
+            id="clearButton"
+            type="button"
+          >
+            CLEAR
+          </button>
+
+          <span class="shortcut">
+            Ctrl + Enter to execute
+          </span>
+
+        </div>
+
+        <div
+          class="results"
+          id="results"
+        >
+
+          <div class="results-empty">
+            Awaiting query.
+            <br><br>
+            The database schema is undocumented.
+            <br>
+            You have read-only SQLite access.
+          </div>
+
+        </div>
+
+      </section>
+
+    </section>
+
+    <footer class="footer">
+      RHUL CYBER SECURITY SOCIETY //
+      COMPETITION INTEGRITY SYSTEM
+    </footer>
+
+  </main>
+
+  <script>
+    const queryInput =
+      document.getElementById(
+        "query"
+      );
+
+    const runButton =
+      document.getElementById(
+        "runButton"
+      );
+
+    const clearButton =
+      document.getElementById(
+        "clearButton"
+      );
+
+    const results =
+      document.getElementById(
+        "results"
+      );
+
+    const unlockCode =
+      document.getElementById(
+        "unlockCode"
+      );
+
+    const unlockButton =
+      document.getElementById(
+        "unlockButton"
+      );
+
+    const unlockMessage =
+      document.getElementById(
+        "unlockMessage"
+      );
+
+    const flag =
+      document.getElementById(
+        "flag"
+      );
+
+
+    function showError(message) {
+      results.innerHTML = "";
+
+      const error =
+        document.createElement(
+          "div"
+        );
+
+      error.className = "error";
+      error.textContent =
+        "SQL ERROR:\n" + message;
+
+      results.appendChild(
+        error
+      );
+    }
+
+
+    function renderResults(data) {
+      results.innerHTML = "";
+
+      const meta =
+        document.createElement(
+          "div"
+        );
+
+      meta.className =
+        "query-meta";
+
+      meta.textContent =
+        data.rowCount +
+        " row(s) returned in " +
+        data.elapsedMs +
+        " ms";
+
+      if (data.truncated) {
+        const warning =
+          document.createElement(
+            "span"
+          );
+
+        warning.className =
+          "warning";
+
+        warning.textContent =
+          " // OUTPUT TRUNCATED";
+
+        meta.appendChild(
+          warning
+        );
+      }
+
+      results.appendChild(
+        meta
+      );
+
+      if (
+        !data.columns ||
+        data.columns.length === 0
+      ) {
+        return;
+      }
+
+      const table =
+        document.createElement(
+          "table"
+        );
+
+      const thead =
+        document.createElement(
+          "thead"
+        );
+
+      const headerRow =
+        document.createElement(
+          "tr"
+        );
+
+      data.columns.forEach(
+        column => {
+          const th =
+            document.createElement(
+              "th"
+            );
+
+          th.textContent =
+            column;
+
+          headerRow.appendChild(
+            th
+          );
+        }
+      );
+
+      thead.appendChild(
+        headerRow
+      );
+
+      table.appendChild(
+        thead
+      );
+
+      const tbody =
+        document.createElement(
+          "tbody"
+        );
+
+      data.rows.forEach(
+        row => {
+          const tr =
+            document.createElement(
+              "tr"
+            );
+
+          row.forEach(
+            value => {
+              const td =
+                document.createElement(
+                  "td"
+                );
+
+              if (value === null) {
+                td.textContent =
+                  "NULL";
+
+                td.className =
+                  "null";
+              } else {
+                td.textContent =
+                  value;
+              }
+
+              tr.appendChild(
+                td
+              );
+            }
+          );
+
+          tbody.appendChild(
+            tr
+          );
+        }
+      );
+
+      table.appendChild(
+        tbody
+      );
+
+      results.appendChild(
+        table
+      );
+    }
+
+
+    async function runQuery() {
+      const query =
+        queryInput.value.trim();
+
+      if (!query) {
+        showError(
+          "Enter a SQL query."
+        );
+        return;
+      }
+
+      runButton.disabled = true;
+      runButton.textContent =
+        "EXECUTING...";
+
+      try {
+        const response =
+          await fetch(
+            "/api/query",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+              body: JSON.stringify({
+                query
+              })
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!data.ok) {
+          showError(
+            data.error ||
+            "Query failed."
+          );
+          return;
+        }
+
+        renderResults(
+          data
+        );
+      } catch (error) {
+        showError(
+          "Could not reach SQL service."
+        );
+      } finally {
+        runButton.disabled = false;
+        runButton.textContent =
+          "RUN QUERY";
+      }
+    }
+
+
+    async function tryUnlock() {
+      const code =
+        unlockCode.value
+          .trim();
+
+      if (!code) {
+        unlockMessage.textContent =
+          "ENTER A CODE.";
+
+        unlockMessage.style.color =
+          "var(--warning)";
+
+        return;
+      }
+
+      unlockButton.disabled = true;
+
+      try {
+        const response =
+          await fetch(
+            "/api/unlock",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+              body: JSON.stringify({
+                code
+              })
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (!data.ok) {
+          unlockMessage.textContent =
+            "ACCESS DENIED";
+
+          unlockMessage.style.color =
+            "var(--danger)";
+
+          flag.hidden = true;
+
+          return;
+        }
+
+        unlockMessage.textContent =
+          data.message;
+
+        unlockMessage.style.color =
+          "var(--green)";
+
+        flag.textContent =
+          data.flag;
+
+        flag.hidden = false;
+
+      } catch (error) {
+        unlockMessage.textContent =
+          "SERVICE ERROR";
+
+        unlockMessage.style.color =
+          "var(--danger)";
+      } finally {
+        unlockButton.disabled = false;
+      }
+    }
+
+
+    runButton.addEventListener(
+      "click",
+      runQuery
+    );
+
+    clearButton.addEventListener(
+      "click",
+      () => {
+        queryInput.value = "";
+        queryInput.focus();
+      }
+    );
+
+    unlockButton.addEventListener(
+      "click",
+      tryUnlock
+    );
+
+    queryInput.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.ctrlKey &&
+          event.key === "Enter"
+        ) {
+          event.preventDefault();
+          runQuery();
+        }
+      }
+    );
+
+    unlockCode.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Enter"
+        ) {
+          tryUnlock();
+        }
+      }
+    );
+  </script>
+</body>
+</html>
